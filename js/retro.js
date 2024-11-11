@@ -46,7 +46,7 @@ const displayPosts = (posts) => {
                         <span>${post.view_count}</span><i class="fa-solid fa-clock"></i><span>${post.posted_time}</span></p>  
                      </div>
             <div class="flex items-end">
-                  <i onclick="handleShowTitle(${posts.title})" class="fa-regular fa-envelope-open text-3xl text-green-500"></i>
+                  <i onclick="showTitle('${post.title}','${post.view_count}')" class="fa-regular fa-envelope-open text-3xl text-green-500"></i>
             </div>
         </div>
         `;
@@ -64,37 +64,24 @@ const displayPosts = (posts) => {
   });
   toggleLoadingSpinner(false);
 };
-const handleShowTitle = async () => {
-  console.log()
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/retro-forum/posts`
-  );
-  const data = await res.json();
-  const post = data.posts[0];
-  console.log(post);
-  showPostTitle(post);
-};
-
-
-// show post title
-const showPostTitle = (post) => {
-  console.log(post)
+const showTitle = (title, viewCount) => {
   const showTitleContainer = document.getElementById("show-title-container");
   showTitleContainer.classList.remove('hidden')
   const titleContainer = document.createElement('div');
   titleContainer.innerHTML = `
   <div class="flex justify-between bg-slate-300 rounded-xl mt-4 p-6">
-  <h2 class="card-title">${post.title}</h2>
-  <p><i class="fa-regular fa-eye"></i><span>${post.view_count}</span></p>
+  <h2 class="card-title">${title}</h2>
+  <p><i class="fa-regular fa-eye"></i><span>${viewCount}</span></p>
   </div>
-    `;
+  `;
+  showTitleContainer.appendChild(titleContainer);
   showTitleContainer.appendChild(titleContainer);
   const readCount = document.getElementById("read-count");
   const readCountText = readCount.innerText;
   const readCountValue = parseInt(readCountText);
   const latestRead = readCountValue + 1;
   readCount.innerText = latestRead;
-};
+}
 // search handle
 const searchHandle = () => {
   toggleLoadingSpinner(true);
@@ -155,4 +142,3 @@ const displayCard = (cards) => {
 
 loadData();
 loadCard();
-
